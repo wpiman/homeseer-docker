@@ -26,4 +26,23 @@ RUN echo "========================================================="
 ENV HOMESEER_VERSION="$VERSION"
 
 # download appropriate version of HomeSeer Linux
-RUN wget -O /homeseer.tar.gz "$DOWNLOAD"
+RUN wget -O /homeseer.tar.gz "$DOWNLOAD" && \
+  sed -i 's|deb.debian.org|archive.debian.org|g' /etc/apt/sources.list && \
+  sed -i 's|security.debian.org|archive.debian.org/|g' /etc/apt/sources.list && \
+  sed -i '/updates/d' /etc/apt/sources.list && \
+  apt-get update -o Acquire::Check-Valid-Until=false && \
+  apt-get update && \
+  apt-get install --allow-downgrades -y libsqlite3-0=3.27.2-3+deb10u1 && \
+  apt-get install --allow-downgrades -y sqlite3=3.27.2-3+deb10u1 && \
+  apt-get install -y htop && \
+  apt-get install -y vim && \
+  apt-get install -y zip && \
+  apt-get install -y jq && \
+  apt-get install -y ffmpeg && \
+  apt-get install -y android-sdk-platform-tools && \
+  apt-get install -y gnupg && \
+  apt-get install -y libsodium-dev
+
+# Typical usage
+# docker build --build-arg BUILD_DATE=$(date -u +'%Y-%m-%dT%H:%M:%S') -t homeseer/homeseer:4.2.22.0-linux .
+

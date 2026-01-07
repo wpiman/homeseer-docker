@@ -3,7 +3,7 @@
     --build-arg VERSION="4.2.22.4"     \
     --build-arg DOWNLOAD="https://homeseer.com/updates4/linux_4_2_22_4.tar.gz"   \
     --platform linux/amd64,linux/arm64 \
-    --tag wpiman/homeseer:4.2.22.4__with_gpg \
+    --tag wpiman/homeseer:4.2.22.4_longer_shutdown_pause \
     --push .
 
   sleep 5

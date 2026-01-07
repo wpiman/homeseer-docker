@@ -89,7 +89,7 @@ function initialize_homeseer {
   # and (2) it is different for any two running instances of the OS kernel.
   dbus-uuidgen --ensure || true
   echo " -> DBUS UUID generated: `cat /var/lib/dbus/machine-id`"
-  sleep 1
+  sleep 5
 
   # launch DBUS as a background task and redirect STDOUT & STDERR to NULL
   dbus-daemon --system --nofork 2>/dev/null &
@@ -172,7 +172,7 @@ function start_homeseer {
   do
     # check to see if the homeseer process is still running in the background
     if [ -d "/proc/${HOMESEER_PID}" ]; then
-      sleep 2; # homeseer mono process is still running
+      sleep 10; # homeseer mono process is still running
     else
       echo "--> HOMESEER PROCESS HAS TERMINATED." ;
       break;   # homeseer mono process has terminated
@@ -211,7 +211,7 @@ function stop_homeseer {
       curl -f -s -o /dev/null ${HOMESEER_CREDENTIALS:+-u} $HOMESEER_CREDENTIALS --data 'ConfirmShutdownhs=Yes' "http://localhost:$HOMESEER_PORT/LinuxTools" || CURL_ERROR=$?;
       test $CURL_ERROR -eq 0 && break
       echo "--> [$i] SHUTDOWN API CALL FAILED WITH ERROR: $CURL_ERROR; RETRYING IN 2 SECONDS"
-      sleep 2
+      sleep 20
   done
 
   # if the API call failed, the we should directly kill the homeseer mono process;
@@ -223,11 +223,12 @@ function stop_homeseer {
 
   # wait until the homeseer mono process has been terminated
   # (timeout after one minute of waiting)
+  # 
   for (( t=0; t<30; t+=2 ))
   do
       pgrep -af mono.'*'\(HSConsole\|HomeSeer\) || break
       echo "--> WAITING FOR HOMESEER TO SHUTDOWN";
-      sleep 2; # two seconds
+      sleep 20; # two seconds
   done
 
   # with homeseer mono process terminated; we are ready to clean up and exit
