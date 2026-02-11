@@ -1,7 +1,7 @@
 #########################################
 # HOMESEER (V4) LINUX - DOCKERFILE
 #########################################
-FROM mono:6.12.0
+FROM wpiman/mono-base:6.12.0.200
 
 # build arguments
 ARG TARGETARCH
@@ -49,11 +49,20 @@ RUN apt-get install --yes tmux curl wget nano apt-utils net-tools iputils-ping e
 
 # install HomeSeer dependencies
 # alsa-base (not available in Debian upstream)
-RUN apt-get install --yes aha ffmpeg alsa-utils tmux curl wget nano flite chromium \
-                          avahi-discover libavahi-compat-libdnssd-dev libnss-mdns  \
-                          avahi-daemon avahi-utils mdns-scan mono-complete         \
-                          mono-devel mono-vbnc mono-xsp4 && \
-    apt-get remove --yes brltty
+RUN apt-get install --yes aha 
+RUN apt-get install --yes ffmpeg 
+RUN apt-get install --yes alsa-utils 
+RUN apt-get install --yes tmux 
+RUN apt-get install --yes curl 
+RUN apt-get install --yes wget 
+RUN apt-get install --yes nano 
+RUN apt-get install --yes flite chromium
+RUN apt-get install --yes avahi-discover 
+RUN apt-get install --yes libavahi-compat-libdnssd-dev libnss-mdns
+RUN apt-get install --yes avahi-daemon avahi-utils mdns-scan mono-complete 
+RUN apt-get install --yes dbus init-system-helpers
+RUN apt-get install --yes  mono-devel mono-vbnc mono-xsp4 
+RUN apt-get remove --yes brltty
 
 # clean APT cache
 RUN apt-get clean && rm -rf /var/lib/apt/lists/*

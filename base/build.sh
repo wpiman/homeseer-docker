@@ -27,7 +27,7 @@
 #-----------------------------------------------------------------------------------------
 
 # docker image version
-VERSION="4.0"
+VERSION="5.0"
 
 echo
 echo "**********************************************************************"
@@ -46,6 +46,6 @@ docker buildx build \
   --build-arg BUILDDATE="$(date -u +'%Y-%m-%dT%H:%M:%SZ')" \
   --build-arg VERSION="$VERSION" \
   --platform linux/amd64,linux/arm64 \
-  --tag homeseer/base:$VERSION \
-  --tag homeseer/base:latest \
-  . $@
+  --tag wpiman/homeseer-base:$VERSION \
+  --tag wpiman/homeseer-base:latest \
+  --push . 
