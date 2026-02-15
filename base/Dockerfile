@@ -1,7 +1,32 @@
 #########################################
 # HOMESEER (V4) LINUX - DOCKERFILE
 #########################################
-FROM wpiman/mono-base:6.12.0.200
+#FROM wpiman/mono-base:6.12.0.200
+FROM mono:6.12.0
+
+# Replace sudo with a passthrough wrapper
+RUN echo '#!/bin/sh\nexec "$@"' > /usr/bin/sudo && \
+    chmod +x /usr/bin/sudo
+
+# build version 200 of mono
+#RUN sed -i 's|http://deb.debian.org|http://archive.debian.org|g' /etc/apt/sources.list && \
+#    sed -i 's|http://security.debian.org|http://archive.debian.org|g' /etc/apt/sources.list && \
+#    sed -i '/buster-updates/d' /etc/apt/sources.list && \
+#    apt-get update && \
+#    apt-get install -y gnupg ca-certificates && \
+#    apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys 3FA7E0328081BFF6A14DA29AA6A19B38D3D831EF && \
+#    echo 'deb https://download.mono-project.com/repo/debian stable-buster main' > /etc/apt/sources.list.d/mono-official.list && \
+#    apt-get update && \
+#    apt-get install -y mono-complete && \
+#    apt-get clean && \
+#    rm -rf /var/lib/apt/lists/*
+
+# Fix Debian Buster EOL repo issues- .186 of mono
+RUN sed -i 's/deb.debian.org/archive.debian.org/g' /etc/apt/sources.list && \
+    sed -i 's|security.debian.org|archive.debian.org/debian-security|g' /etc/apt/sources.list && \
+    sed -i '/stretch-updates/d' /etc/apt/sources.list && \
+    sed -i '/buster-updates/d' /etc/apt/sources.list
+
 
 # build arguments
 ARG TARGETARCH

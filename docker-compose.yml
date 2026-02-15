@@ -24,7 +24,7 @@ volumes:
 services:
   homeseer_trial:
     container_name: try_homeseer_trial
-    image: wpiman/homeseer:4.2.22.68
+    image: wpiman/homeseer:4.2.22.94_mono200
     hostname: homeseer_trial
     restart: unless-stopped
     network_mode: bridge

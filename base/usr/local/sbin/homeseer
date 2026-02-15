@@ -175,6 +175,7 @@ function start_homeseer {
       sleep 10; # homeseer mono process is still running
     else
       echo "--> HOMESEER PROCESS HAS TERMINATED." ;
+      sleep 10; # homeseer mono process is still running
       break;   # homeseer mono process has terminated
     fi
   done
@@ -235,6 +236,8 @@ function stop_homeseer {
 
   # with homeseer mono process terminated; we are ready to clean up and exit
   exit_homeseer;
+
+  sleep 5;
 }
 
 # -------------------------------------------------------------------------
@@ -253,6 +256,7 @@ function exit_homeseer {
   sleep 2;
   killall -vq avahi-daemon || true; # stop the AVAHI daemon process
 
+  sleep 5;
   echo
   echo "**********************************************************************"
   echo " HOMESEER CONTAINER - STOPPING DBUS DAEMON"
@@ -260,6 +264,7 @@ function exit_homeseer {
   echo
   killall -vq dbus-daemon || true;  # stop the DBUS daemon process
 
+  sleep 5;
   echo
   echo "**********************************************************************"
   echo " HOMESEER CONTAINER - EXITING"
@@ -341,6 +346,8 @@ echo
 # exit homeseer now; the mono process has already exited we just need
 # to stop any other daemons/processes and perform any cleanup
 exit_homeseer;
+
+sleep 10
 
 # GOODBYE
 exit 0

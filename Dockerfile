@@ -1,7 +1,9 @@
 #########################################
 # HOMESEER (V4) LINUX - DOCKERFILE
 #########################################
-FROM wpiman/homeseer-base:5.0
+ARG BASE_IMAGE=wpiman/homeseer-base:latest
+FROM ${BASE_IMAGE}
+
 ARG TARGETARCH
 ARG BUILDDATE
 ARG VERSION
@@ -26,12 +28,18 @@ RUN echo "========================================================="
 # configure build time environment variables
 ENV HOMESEER_VERSION="$VERSION"
 
+RUN sed -i 's|http://deb.debian.org/debian|http://archive.debian.org/debian|g' /etc/apt/sources.list && \
+    sed -i 's|http://deb.debian.org/debian-security|http://archive.debian.org/debian-security|g' /etc/apt/sources.list && \
+    sed -i '/buster-updates/d' /etc/apt/sources.list && \
+    echo 'Acquire::Check-Valid-Until "false";' > /etc/apt/apt.conf.d/99no-check-valid-until
+
 # download appropriate version of HomeSeer Linux
-RUN wget -O /homeseer.tar.gz "$DOWNLOAD" && \
-  apt-get update && \
+RUN  apt-get update && \
   apt-get install -y htop vim zip jq ffmpeg \
   android-sdk-platform-tools gnupg libsodium-dev \
   libsqlite3-0 sqlite3
+
+RUN wget -O /homeseer.tar.gz "$DOWNLOAD" 
 
 # Typical usage
 # docker build --build-arg BUILD_DATE=$(date -u +'%Y-%m-%dT%H:%M:%S') -t homeseer/homeseer:4.2.22.0-linux .

@@ -27,7 +27,7 @@
 #-----------------------------------------------------------------------------------------
 
 # docker image version
-VERSION="5.0"
+VERSION="Mono182"
 
 echo
 echo "**********************************************************************"
@@ -47,5 +47,4 @@ docker buildx build \
   --build-arg VERSION="$VERSION" \
   --platform linux/amd64,linux/arm64 \
   --tag wpiman/homeseer-base:$VERSION \
-  --tag wpiman/homeseer-base:latest \
   --push . 
